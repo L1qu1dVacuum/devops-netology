@@ -3,62 +3,91 @@
 
 ------
 
-1. Найдите полный хеш и комментарий коммита, хеш которого начинается на `aefea`.
-    
-    `$ git log aefea --pretty=oneline -1`
-
-        aefead2207ef7e2aa5dc81a34aedf0cad4c32545 Update CHANGELOG.md
+1. Установленно
 
 
-2. Какому тегу соответствует коммит `85024d3`?
-
-    `$ git log 85024d3 --oneline -1`
-
-        85024d310 (tag: v0.12.23) v0.12.23
+2. Установленно
 
 
-3. Сколько родителей у коммита `b8d720`? Напишите их хеши.
+3. Выбрал PoverShell
 
-    `$ git rev-parse b8d720^@`
-
-        56cd7859e05c36c06b56d013b55a252d0bb7e158
-        9ea88f22fc6269854151c571162c5bcf958bee2b
-
-
-4. Перечислите хеши и комментарии всех коммитов которые были сделаны между тегами  v0.12.23 и v0.12.24.
-
-    `$ git log v0.12.23..v0.12.24 --pretty=oneline`
-
-        b14b74c4939dcab573326f4e3ee2a62e23e12f89 [Website] vmc provider links
-        3f235065b9347a758efadc92295b540ee0a5e26e Update CHANGELOG.md
-        6ae64e247b332925b872447e9ce869657281c2bf registry: Fix panic when server is unreachable
-        5c619ca1baf2e21a155fcdb4c264cc9e24a2a353 website: Remove links to the getting started guide's old location
-        06275647e2b53d97d4f0a19a0fec11f6d69820b5 Update CHANGELOG.md
-        d5f9411f5108260320064349b757f55c09bc4b80 command: Fix bug when using terraform login on Windows
-        4b6d06cc5dcb78af637bbb19c198faff37a066ed Update CHANGELOG.md
-        dd01a35078f040ca984cdd349f18d0b67e486c35 Update CHANGELOG.md
-        225466bc3e5f35baa5d07197bbc079345b77525e Cleanup after v0.12.23 release
+	Проблемы:
+		-SSL/TLS ошибок не возникло
+		-MobaXterm не использовался
+		-Все пути на латинице
+		-Hyper-V отключил
+		-От WSL2 отказался на время задания
+		-Аппаратная виртуализация включена в BIOS
+		-Искользую Windows, не актуально
 
 
-5. Найдите коммит в котором была создана функция `func providerSource`, ее определение в коде выглядит 
-так `func providerSource(...)` (вместо троеточего перечислены аргументы).
+4. Создан базовый файл, запущена Ubuntu.
 
-    `$ git log -S'func providerSource('`
+	-Создан каталог, выполнен `vagrant init`: 
 
-        8c928e835 main: Consult local directories as potential mirrors of providers
+	 	`C:\Users\xxxxx\Documents\Education\Vagrant
+ 	 	Mode                 LastWriteTime         Length Name
+	 	----                 -------------         ------ ----
+	 	d-----        11.11.2021     15:55                .vagrant
+	 	-a----        11.11.2021     15:55             80 Vagrantfile`
+	
+	-Содержимое Varantfile заменено:
+
+ 	 	`-Vagrant.configure("2") do |config|
+ 			 config.vm.box = "bento/ubuntu-20.04"
+ 	 	end	`
+
+	-В дирректории выполнена команда `vagrant up`
+
+	-Поэксперементировал c командами `vagrant suspend` и `vagrant halt`
 
 
-6. Найдите все коммиты в которых была изменена функция `globalPluginDirs`.
-
-    `$ git log -S'globalPluginDirs' --oneline`
-
-        35a058fb3 main: configure credentials from the CLI config file
-        c0b176109 prevent log output during init
-        8364383c3 Push plugin discovery down into command package
+5. Машине выделено 2 ядра, 64Гб места на диске, 1Гб оперативной памяти, 1Гб Swap, 4Мб видеопамяти.
 
 
-7. Кто автор функции `synchronizedWriters`? 
-    
-    `$ git log -S'synchronizedWriters' --pretty=%an --reverse | head -1`
+6. Ознакомился, добавил ресурсов, сделал `vagrant relod`:
 
-        Martin Atkins
+		`Vagrant.configure("2") do |config|
+			config.vm.box = "bento/ubuntu-20.04"
+			config.vm.provider "virtualbox" do |v|
+				v.memory = 4096
+				v.cpus = 4
+			end
+		end`
+
+
+7. Подключился к машине с помощью `ssh`
+
+
+8. Ознакомился, почитал.
+	-Переменная `HISTFILESIZE`, 846 строка.
+	-`export HISTCONTROL=ignoreboth` позволяет не сохранять в историю команда начатые с пробела и дубли команд
+
+
+9. `{}` используются для записи групповых команд исполняемых в текущей среде shell, 257 строка.
+
+
+10. `touch file{1..100000}`
+	-получится если увеличить обьем стека хотя бы до 32Мб. 
+
+
+11. `[[ ]]`  возвращает булево значение. В контексте вопроса вероятно наличе/отсутствие дирректории `/tmp`
+
+
+12. Решение:
+
+	`$ mkdir /tmp/new_path_directory/`
+	`$ cp /usr/bin/bash /tmp/new_path_directory/`
+	`$ PATH=/tmp/new_path_directory:$PATH`
+
+	    `>>> bash is /tmp/new_path_directory/bash
+		    bash is /usr/bin/bash
+		    bash is /bin/bash`
+
+
+13. `at` - позволяет выполнить команду однократоно в запланированное время
+    `batch` - позволяет выполнить команду однократоно при загрузке системы ниже определенного значения
+
+
+14. `$^D` 
+    `$vagrant halt`

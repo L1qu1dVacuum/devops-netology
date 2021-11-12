@@ -25,17 +25,17 @@
 
 	-Создан каталог, выполнен `vagrant init`: 
 
-	 	`C:\Users\xxxxx\Documents\Education\Vagrant
+	 	C:\Users\xxxxx\Documents\Education\Vagrant
  	 	Mode                 LastWriteTime         Length Name
 	 	----                 -------------         ------ ----
 	 	d-----        11.11.2021     15:55                .vagrant
-	 	-a----        11.11.2021     15:55             80 Vagrantfile`
+	 	-a----        11.11.2021     15:55             80 Vagrantfile
 	
 	-Содержимое Varantfile заменено:
 
- 	 	`-Vagrant.configure("2") do |config|
+ 	 	Vagrant.configure("2") do |config|
  			 config.vm.box = "bento/ubuntu-20.04"
- 	 	end	`
+  	    end	
 
 	-В дирректории выполнена команда `vagrant up`
 
@@ -47,13 +47,13 @@
 
 6. Ознакомился, добавил ресурсов, сделал `vagrant relod`:
 
-		`Vagrant.configure("2") do |config|
+		Vagrant.configure("2") do |config|
 			config.vm.box = "bento/ubuntu-20.04"
 			config.vm.provider "virtualbox" do |v|
 				v.memory = 4096
 				v.cpus = 4
 			end
-		end`
+		end
 
 
 7. Подключился к машине с помощью `ssh`
@@ -80,9 +80,9 @@
 	`$ cp /usr/bin/bash /tmp/new_path_directory/`
 	`$ PATH=/tmp/new_path_directory:$PATH`
 
-	    `>>> bash is /tmp/new_path_directory/bash
+	    >>> bash is /tmp/new_path_directory/bash
 		    bash is /usr/bin/bash
-		    bash is /bin/bash`
+		    bash is /bin/bash
 
 
 13. `at` - позволяет выполнить команду однократоно в запланированное время

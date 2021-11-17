@@ -3,98 +3,95 @@
 
 ------
 
-1. Установленно
+1. `$type cd`  cd является интегрированной командой оболочки 
 
 
-2. Установленно
+2. альтернатива команде без pipe `$grep -c 2 README.md` ознакомился
 
 
-3. Выбрал PoverShell
-
-    Проблемы:
-
-        -SSL/TLS ошибок не возникло
-        -MobaXterm не использовался
-        -Все пути на латинице
-        -Hyper-V отключил
-        -От WSL2 отказался на время задания
-        -Аппаратная виртуализация включена в BIOS
-        -Искользую Windows, не актуально
+3. `$pstree -p` родителем для всех процессов в виртуальной машине является systemd
 
 
-4. Создан базовый файл, запущена Ubuntu.
+4. `$ls 2>/dev/pts/1`
 
-	-Создан каталог, выполнен `vagrant init`: 
 
-	 	C:\Users\xxxxx\Documents\Education\Vagrant
- 	 	Mode                 LastWriteTime         Length Name
-	 	----                 -------------         ------ ----
-	 	d-----        11.11.2021     15:55                .vagrant
-	 	-a----        11.11.2021     15:55             80 Vagrantfile
+5. `$ls -lha | tee ls.txt | less`
+
+
+6. -Логин в машину по ssh
+
+	`$tty`
+		
+		/dev/pts/0
+
+   -Логин в машину физически (или через virtualbox)
+
+	`$tty`
+
+		/dev/tty1
+
+   `$echo 'Hello World' > /dev/tty1`
+
+
+7. Мы создали файловый дискриптор 5 в который перенаправили stdout, а затем отправили в него echo netology, которая отработала как стандартный вывод.
+
+
+8. `$bash 5>&1`
 	
-	-Содержимое Varantfile заменено:
+   `$ls -lhй 2>&1>/proc/$$/fd/5 | cat>output.txt`
 
- 	 	Vagrant.configure("2") do |config|
- 			 config.vm.box = "bento/ubuntu-20.04"
-  	    end	
+   `$nano output.txt`
 
-	-В дирректории выполнена команда `vagrant up`
-
-	-Поэксперементировал c командами `vagrant suspend` и `vagrant halt`
+		ls: invalid option -- 'й'
+		Try 'ls --help' for more information.
 
 
-5. Машине выделено 2 ядра, 64Гб места на диске, 1Гб оперативной памяти, 1Гб Swap, 4Мб видеопамяти.
+9. Переменные окружения. 
+
+   `$tail /proc/$$/environ`
 
 
-6. Ознакомился, добавил ресурсов, сделал `vagrant relod`:
+10. -/proc/<PID>/cmdline содержит в себе командную строку для для процесса с одноименным PID.
 
-		Vagrant.configure("2") do |config|
-			config.vm.box = "bento/ubuntu-20.04"
-			config.vm.provider "virtualbox" do |v|
-				v.memory = 4096
-				v.cpus = 4
-			end
-		end
+    -/proc/<PID>/exe содержит в себе символическую ссылку на исполняемою одноименным процессом команду 
 
 
-7. Подключился к машине с помощью `ssh`
+11. `$cat /proc/cpuinfo | grep -om 1 sse...`
+
+        sse ss
+        sse3 f
+        sse4_1
+        sse4_2
 
 
-8. Ознакомился, почитал.
-
-    -Переменная `HISTFILESIZE`, 846 строка.
-
-    -`export HISTCONTROL=ignoreboth` позволяет не сохранять в историю команда начатые с пробела и дубли команд
+12. Ошибка возникает, потому что по умолчанию для ssh сеансов не выделяются сессии псевдотерминала, т.к. удаленный пользователь по умолчанию не является аутентифицированным.
+    
+    `$ssh -t localhost 'tty'` ключ -t позволяет принудительно назначить сессию псевдотерминала.
 
 
-9. `{}` используются для записи групповых команд исполняемых в текущей среде shell, 257 строка.
+13.	pts/0:
+
+		`$sudo su`
+
+		`$echo 0 > /proc/sys/kernel/yama/ptrace_scope`
+
+		`$^D`
+
+		`$top`
+
+		`$^C`
+
+		`$bg`
+
+		`$disown top`
+	
+			-bash: warning: deleting stopped job 2 with process group 1141
+		
+	pts/1:
+
+		`$reptyr 1141`
 
 
-10. `touch file{1..100000}`
+14. -Команда tee принимает стандартный ввод и производит одновременный стандартный вывод и запись в файл.
 
-    -получится если увеличить обьем стека хотя бы до 32Мб. 
-
-
-11. `[[ ]]`  возвращает булево значение. В контексте вопроса вероятно наличе/отсутствие дирректории `/tmp`
-
-
-12. Решение:
-
-    `$ mkdir /tmp/new_path_directory/`
-
-    `$ cp /usr/bin/bash /tmp/new_path_directory/`
-
-    `$ PATH=/tmp/new_path_directory:$PATH`
-
-        bash is /tmp/new_path_directory/bash
-        bash is /usr/bin/bash
-        bash is /bin/bash
-
-
-13. `at` - позволяет выполнить команду однократоно в запланированное время
-
-    `batch` - позволяет выполнить команду однократоно при загрузке системы ниже определенного значения
-
-
-14. `$^D` 
-    `$vagrant halt`
+    -Вероятно команда работает, потому что для перенаправления использует stdin stdout, а не процессы shell'a	 

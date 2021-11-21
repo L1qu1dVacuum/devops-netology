@@ -15,7 +15,20 @@
 4. `$ls 2>/dev/pts/1`
 
 
-5. `$ls -lha | tee ls.txt | less`
+5. `cat output.txt`
+
+        ls: invalid option -- '�'
+        Try 'ls --help' for more information.
+
+    `cat test_output.txt`
+        
+        cat: test_output.txt: No such file or directory
+
+    `wc -l < output.txt > test_output.txt`
+
+    `cat test_output.txt`
+    
+        2
 
 
 6. Логин в машину по ssh
@@ -38,14 +51,10 @@
 7. Мы создали файловый дискриптор 5 в который перенаправили stdout, а затем отправили в него echo netology, которая отработала как стандартный вывод.
 
 
-8. `$bash 5>&1`
-	
-   `$ls -lhй 2>&1>/proc/$$/fd/5 | cat>output.txt`
+8. `sudo ls /non-existent /etc/passwd 4>&2 2>&1 1>&4 | wc -l`
 
-   `$nano output.txt`
-
-		ls: invalid option -- 'й'
-		Try 'ls --help' for more information.
+		/etc/passwd
+        1
 
 
 9. Переменные окружения. 

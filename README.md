@@ -3,106 +3,131 @@
 
 ------
 
-1. `$type cd`  cd является интегрированной командой оболочки 
+1. Установил node_exporter. Из-за ошибки пришлось пробросить программе порт 9100 в Vagrantfile.
+   
+   Переместил файл по адресу `/usr/local/bin`
 
+   Создал unit-файл в `/etc/systemd/system/node_exporter.service`
 
-2. альтернатива команде без pipe `$grep -c 2 README.md`, ознакомился
+   		[Unit]  
+   		Description=Node Exporter  
+  
+   		[Service]  
+   		EnvironmentFile=-/etc/sysconfig/node_exporter  
+   		ExecStart=/usr/local/bin/node_exporter $OPTIONS  
+  
+   		[Install]  
+   		WantedBy=multi-user.target
 
+   Добавил node_exporter в автозагрузку:
 
-3. `$pstree -p` родителем для всех процессов в виртуальной машине является systemd
+    `$sudo systemctl daemon-reload`
 
+    `$sudo systemctl enable --now node_exporter`
 
-4. `$ls 2>/dev/pts/1`
+   Соответсвенно по аналогии с cron к запускаемому процессу через node_export.service можно добавить опции.
 
+   	Например выделить отдельных User и Group, или добавить Restart=on-failure, или что-либо по потребностям. 
 
-5. `cat output.txt`
+   Проверил, что что с помощью systemctl процесс корректно стартует, завершается, а после перезагрузки автоматически поднимается.  
 
-        ls: invalid option -- '�'
-        Try 'ls --help' for more information.
+    `$ps -e | grep node_exporter` 
 
-    `cat test_output.txt`
-        
-        cat: test_output.txt: No such file or directory
+		627 ?        00:00:00 node_exporter
 
-    `wc -l < output.txt > test_output.txt`
+	`$systemctl stop node_exporter`
 
-    `cat test_output.txt`
-    
-        2
-
-
-6. Логин в машину по ssh
-
-    `$tty`
-		
-        /dev/pts/0
-
-   Логин в машину физически (или через virtualbox)
-
-    `$tty`
-
-        /dev/tty1
-
-   `$echo 'Hello World' > /dev/tty1`
-
-        Hello World
-
-
-7. Мы создали файловый дискриптор 5 в который перенаправили stdout, а затем отправили в него echo netology, которая отработала как стандартный вывод.
-
-
-8. `sudo ls /non-existent /etc/passwd 4>&2 2>&1 1>&4 | wc -l`
-
-		/etc/passwd
-        1
-
-
-9. Переменные окружения. 
-
-   `$tail /proc/$$/environ`
-
-
-10. `/proc/<PID>/cmdline` содержит в себе командную строку для для процесса с одноименным PID.
-
-    `/proc/<PID>/exe` содержит в себе символическую ссылку на исполняемою одноименным процессом команду 
-
-
-11. `$cat /proc/cpuinfo | grep -om 1 sse...`
-
-           sse ss
-           sse3 f
-           sse4_1
-           sse4_2
-
-
-12. Ошибка возникает, потому что по умолчанию для ssh сеансов не выделяются сессии псевдотерминала, т.к. удаленный пользователь по умолчанию не является аутентифицированным.
-    
-    `$ssh -t localhost 'tty'` ключ -t позволяет принудительно назначить сессию псевдотерминала.
-
-
-13. pts/0:
-
-    `$sudo su`
-
-    `$echo 0 > /proc/sys/kernel/yama/ptrace_scope`
-
-    `$^D`
-
-    `$top`
-
-    `$^C`
-
-    `$bg`
-
-    `$disown top`
+		==== AUTHENTICATING FOR org.freedesktop.systemd1.manage-units ===
+		Authentication is required to stop 'node_exporter.service'.
+		Authenticating as: vagrant,,, (vagrant)
+		Password:
 	
-        -bash: warning: deleting stopped job 2 with process group 1141
-		
-    pts/1:
+	`$ps -e | grep node_exporter` 
 
-    `$reptyr 1141`
+		ничего
+
+	`$systemctl start node_exporter`
+
+		==== AUTHENTICATING FOR org.freedesktop.systemd1.manage-units ===
+		Authentication is required to start 'node_exporter.service'.
+		Authenticating as: vagrant,,, (vagrant)
+		Password:
+
+	`$ps -e | grep node_exporter`
+
+		1233 ?        00:00:00 node_exporter
+
+	`$sudo reboot`
+
+	`$ps -e | grep node_exporter`
+
+		614 ?        00:00:00 node_exporter
 
 
-14. Команда tee принимает стандартный ввод и производит одновременный стандартный вывод и запись в файл.
+2. `$curl http://localhost:9100/metrics | grep "node_cpu_seconds_total" | cat > metrics.cpu.txt`
 
-    Вероятно команда работает, потому что для перенаправления использует stdin stdout, а не процессы shell'a	 
+   `$curl http://localhost:9100/metrics | grep "node_memory_Mem" | cat > metrics.memory.txt`
+
+   `$curl http://localhost:9100/metrics | grep -P 'node_disk_io|node_disk_read|node_disk_write' | cat > metrics.disk.txt`
+
+   `$curl http://localhost:9100/metrics | grep -P 'network_receive_packets|network_transmit_packets|dropped_total' | cat > metrics.network.txt`
+
+
+3. Netdata установил.
+
+   Кофигурационный файл netdata.conf изменил.
+
+   Порт в Vagrantfile пробросил.
+
+   ВМ перезагрузил. 
+
+   Зашел с машины-хоста по localhost:19999, попал в вебинтерфейс Netdata (красивое...).
+
+
+4. `$dmesg |grep virtual`
+
+		[    0.003491] CPU MTRRs all blank - virtualized system.
+		[    0.054361] Booting paravirtualized kernel on KVM
+		[    6.087474] systemd[1]: Detected virtualization oracle.
+
+   Да, понять можно. Да, в даннмом конкретном случае система осознает что виртуализирована.
+
+
+5. `$sysctl -n fs.nr_open`
+
+		1048576
+
+   Это лимит на кол-во открытых дискрипторов.
+
+   `$ulimit -Sn`
+
+		1024
+
+   По умолчанию софт лимит на кол-во открытых дискрипторов не позволит достичь такого числа.
+
+
+6. `$sudo unshare -fp --mount-proc sleep 1h`
+
+   `$^Z`
+
+   `$ps -e | grep sleep`
+
+        1 pts/0    00:00:00 sleep
+
+   `$sudo nsenter -t $1321 -m -p`
+
+   `$ps`
+
+        PID TTY          TIME CMD
+        pts/0    00:00:00 sleep
+        pts/0    00:00:00 bash
+        pts/0    00:00:00 ps
+
+	
+7. Команда `$:(){ :|:& };:` по сути является простой разновидностью форкбомбы. 
+
+        310.512344] cgroup: fork rejected by pids controller in /user.slice/user-1000.slice/session-5.scope
+
+   По умолчанию когда кол-во форков процесса достигает 7925шт. (в моем случае) стабатывет ограничение кол-ва PIDов для текущего пользователя. 
+
+   Если изменить `ulimit -u` до небольшого значения (100 например), то отсечка сработает раньше.  

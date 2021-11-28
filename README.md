@@ -112,16 +112,16 @@
 
    `$ps -e | grep sleep`
 
-        1 pts/0    00:00:00 sleep
+        1321 pts/0    00:00:00 sleep
 
    `$sudo nsenter -t $1321 -m -p`
 
    `$ps`
 
         PID TTY          TIME CMD
-        pts/0    00:00:00 sleep
-        pts/0    00:00:00 bash
-        pts/0    00:00:00 ps
+         1 pts/0    00:00:00 sleep
+         2 pts/0    00:00:00 bash
+        11 pts/0    00:00:00 ps
 
 	
 7. Команда `$:(){ :|:& };:` по сути является простой разновидностью форкбомбы. 

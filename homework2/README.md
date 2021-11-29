@@ -108,9 +108,7 @@
 		    └─vg0-lvol0      253:2    0  100M  0 lvm   /tmp/new
 
 
-15. `$gzip -t /tmp/new/test.gz`
-
-    `$echo $?`
+15. `$gzip -t /tmp/new/test.gz && echo $?`
 
 		0
 
@@ -137,9 +135,7 @@
 		               md/raid1:md0: Operation continuing on 1 devices.
 
 
-19. `$gzip -t /tmp/new/test.gz`
-
-    `$echo $?`
+19. `$gzip -t /tmp/new/test.gz && echo $?`
 
 		0
 

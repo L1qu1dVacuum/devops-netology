@@ -5,26 +5,27 @@
 
 1. `$telnet stackoverflow.com 80`
 
-	GET /questions HTTP/1.0
-	HOST: stackoverflow.com
+    GET /questions HTTP/1.0
 
-		HTTP/1.1 301 Moved Permanently
-		cache-control: no-cache, no-store, must-revalidate
-		location: https://stackoverflow.com/questions
-		x-request-guid: 51dd2d93-8f3c-4472-a7b3-166df28bcd94
-		feature-policy: microphone 'none'; speaker 'none'
-		content-security-policy: upgrade-insecure-requests; frame-ancestors 'self' https://stackexchange.com
-		Accept-Ranges: bytes
-		Date: Wed, 01 Dec 2021 10:23:38 GMT
-		Via: 1.1 varnish
-		Connection: close
-		X-Served-By: cache-bma1676-BMA
-		X-Cache: MISS
-		X-Cache-Hits: 0
-		X-Timer: S1638354219.828623,VS0,VE101
-		Vary: Fastly-SSL
-		X-DNS-Prefetch-Control: off
-		Set-Cookie: prov=93b49433-0823-645a-89d5-e8d636e907a6; domain=.stackoverflow.com; expires=Fri, 01-Jan-2055 00:00:00 GMT; path=/; HttpOnly
+    HOST: stackoverflow.com
+
+        HTTP/1.1 301 Moved Permanently
+        cache-control: no-cache, no-store, must-revalidate
+        location: https://stackoverflow.com/questions
+        x-request-guid: 51dd2d93-8f3c-4472-a7b3-166df28bcd94
+        feature-policy: microphone 'none'; speaker 'none'
+        content-security-policy: upgrade-insecure-requests; frame-ancestors 'self' https://stackexchange.com
+        Accept-Ranges: bytes
+        Date: Wed, 01 Dec 2021 10:23:38 GMT
+        Via: 1.1 varnish
+        Connection: close
+        X-Served-By: cache-bma1676-BMA
+        X-Cache: MISS
+        X-Cache-Hits: 0
+        X-Timer: S1638354219.828623,VS0,VE101
+        Vary: Fastly-SSL
+        X-DNS-Prefetch-Control: off
+        Set-Cookie: prov=93b49433-0823-645a-89d5-e8d636e907a6; domain=.stackoverflow.com; expires=Fri, 01-Jan-2055 00:00:00 GMT; path=/; HttpOnly
 
    Ошибка 301 - это код состояния HTTP, сообщающий, что страница, к которой клиент обращается, перемещена по новому адресу и старый адрес следует считать устаревшим. 
 
@@ -37,7 +38,9 @@
 
    [Скриншот](https://drive.google.com/file/d/1SzKhxpROnEr7HZGXOFchatD_aWphwwPk/view?usp=sharing)
 
+
 3. Мой IP адрес 89.113.46.95
+
 
 4. `$sudo whois 89.113.46.95`
 

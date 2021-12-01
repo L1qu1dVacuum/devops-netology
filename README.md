@@ -81,11 +81,12 @@
 
 
 6. `$mtr -zn 8.8.8.8`
+
                                                                                Packets               Pings
- 		Host                                                                        Loss%   Snt   Last   Avg  Best  Wrst StDev
-		...
-		6. AS15169  72.14.198.182                                                    0.0%    35   15.0  18.6  10.4  93.8  14.1
-		...
+         Host                                                                        Loss%   Snt   Last   Avg  Best  Wrst StDev
+        ...
+        6. AS15169  72.14.198.182                                                    0.0%    35   15.0  18.6  10.4  93.8  14.1
+        ...
 
    Вот на этом участке наибольшая задержка.
 

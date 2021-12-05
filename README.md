@@ -32,9 +32,9 @@
 		...
 		auto eth2.100
 		iface eth2.100 inet static
-        		address 192.168.1.1
-        		netmask 255.255.255.0
-       			vlan_raw_device eth0
+			address 192.168.1.1
+			netmask 255.255.255.0
+			vlan_raw_device eth0        		
 
 
 4. Для агрегации сетевых интерфейсов в Linux существует метод LAG. Для балансировки нагрузки автоматически существует протокол LACP, или Port Trunking для мануальной балансировки.

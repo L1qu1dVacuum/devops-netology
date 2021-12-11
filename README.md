@@ -197,21 +197,22 @@
 
    `$lsmod | grep dummy`
 
-		dummy			16384  0
+        dummy			16384  0
 
    `$ifconfig -a | grep dummy`
 
-		dummy0: flags=195<UP,BROADCAST,RUNNING,NOARP>  mtu 1500
-		dummy1: flags=195<UP,BROADCAST,RUNNING,NOARP>  mtu 1500
+        dummy0: flags=195<UP,BROADCAST,RUNNING,NOARP>  mtu 1500
+        dummy1: flags=195<UP,BROADCAST,RUNNING,NOARP>  mtu 1500
 
    `$sudo ip addr add 10.0.0.101/24 dev dummy0`
+
    `$sudo ip addr add 10.0.0.102/24 dev dummy0`
 
    `$routel | grep dummy0`
 
-		    target            gateway          source    proto    scope    dev tbl
-		10.0.0.101              local        10.0.0.1   kernel     host dummy0 local
-		10.0.0.102              local        10.0.0.1   kernel     host dummy0 local
+            target            gateway          source    proto    scope    dev tbl
+        10.0.0.101              local        10.0.0.1   kernel     host dummy0 local
+        10.0.0.102              local        10.0.0.1   kernel     host dummy0 local
 
 
 3. `$sudo lsof -nP -i | grep LISTEN`

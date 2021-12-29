@@ -58,9 +58,9 @@ for result in result_os.split('\n'):
 ```
 $ python3 pypy.py
     bar.txt
-	foo.txt
-	lol/kek/cheburek.txt
-	pypy.py
+    foo.txt
+    lol/kek/cheburek.txt
+    pypy.py
 ```
 
 ## Обязательная задача 3
@@ -106,7 +106,7 @@ $ python3 newpypy.py
 import socket
 import time
 
-services = {'drive.google.com': '216.58.210.142', 'mail.google.com': ' ', 'google.com': ' '}
+services = {'drive.google.com': ' ', 'mail.google.com': ' ', 'google.com': ' '}
 
 while 1 == 1:
     for host in services:
@@ -125,7 +125,7 @@ while 1 == 1:
 ```
 $ sudo python3 web.py
 
-	drive.google.com-216.58.210.142
+	[ERROR]drive.google.com IP mistmatch:   216.58.210.142
 	[ERROR]mail.google.com IP mistmatch:   216.58.210.165
 	[ERROR]google.com IP mistmatch:   216.58.209.206
 	drive.google.com-216.58.210.142

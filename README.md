@@ -71,24 +71,24 @@ $ sudo python3 web.py
 
 ### json-файл(ы), который(е) записал ваш скрипт:
 ```json
-	[
-	  {
-	    "drive.google.com": "216.58.210.142"
-	  },
-	  {
-	    "mail.google.com": "216.58.209.165"
-	  },
-	  {
-	    "google.com": "216.58.209.206"
-	  }
-	]
+[
+  {
+    "drive.google.com": "216.58.210.142"
+  },
+  {
+    "mail.google.com": "216.58.209.165"
+  },
+  {
+    "google.com": "216.58.209.206"
+  }
+]
 
 ```
 
 ### yml-файл(ы), который(е) записал ваш скрипт:
 ```yaml
-	- drive.google.com: 216.58.210.142
-	- mail.google.com: 216.58.209.165
-	- google.com: 216.58.209.206
+- drive.google.com: 216.58.210.142
+- mail.google.com: 216.58.209.165
+- google.com: 216.58.209.206
 
 ```

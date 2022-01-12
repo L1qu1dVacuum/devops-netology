@@ -3,101 +3,29 @@
 
 ------
 
-# Домашнее задание к занятию "4.2. Использование Python для решения типовых DevOps задач"
+# Домашнее задание к занятию "4.3. Языки разметки JSON и YAML"
+
 
 ## Обязательная задача 1
-
-Есть скрипт:
-```python
-#!/usr/bin/env python3
-a = 1
-b = '2'
-c = a + b
+Мы выгрузили JSON, который получили через API запрос к нашему сервису:
 ```
-
-### Вопросы:
-| Вопрос  | Ответ |
-| ------------- | ------------- |
-| Какое значение будет присвоено переменной `c`?  | ошибка, разные типы данных  |
-| Как получить для переменной `c` значение 12?  | c = str(a) + b  |
-| Как получить для переменной `c` значение 3?  | c = a + int(b)  |
+    { "info" : "Sample JSON output from our service\t",
+        "elements" :[
+            { "name" : "first",
+            "type" : "server",
+            "ip" : 7175 
+            }
+            { "name" : "second",
+            "type" : "proxy",
+            "ip" : "71.78.22.43"
+            }
+        ]
+    }
+```
+  Нужно найти и исправить все ошибки, которые допускает наш сервис
 
 ## Обязательная задача 2
-Мы устроились на работу в компанию, где раньше уже был DevOps Engineer. Он написал скрипт, позволяющий узнать, какие файлы модифицированы в репозитории, относительно локальных изменений. Этим скриптом недовольно начальство, потому что в его выводе есть не все изменённые файлы, а также непонятен полный путь к директории, где они находятся. Как можно доработать скрипт ниже, чтобы он исполнял требования вашего руководителя?
-
-```python
-#!/usr/bin/env python3
-
-import os
-
-bash_command = ["cd ~/netology/sysadm-homeworks", "git status"]
-result_os = os.popen(' && '.join(bash_command)).read()
-is_change = False
-for result in result_os.split('\n'):
-    if result.find('modified') != -1:
-        prepare_result = result.replace('\tmodified:   ', '')
-        print(prepare_result)
-        break
-```
-
-### Ваш скрипт:
-```python
-#!/usr/bin/env python3
-
-import os
-
-bash_command = ["cd ~/test", "git add", "git status"]
-result_os = os.popen(' && '.join(bash_command)).read()
-for result in result_os.split('\n'):
-    if result.find('modified') != -1:
-        prepare_result = result.replace('\tmodified:', '')
-        print(prepare_result)
-```
-
-### Вывод скрипта при запуске при тестировании:
-```
-$ python3 pypy.py
-    bar.txt
-    foo.txt
-    lol/kek/cheburek.txt
-    pypy.py
-```
-
-## Обязательная задача 3
-1. Доработать скрипт выше так, чтобы он мог проверять не только локальный репозиторий в текущей директории, а также умел воспринимать путь к репозиторию, который мы передаём как входной параметр. Мы точно знаем, что начальство коварное и будет проверять работу этого скрипта в директориях, которые не являются локальными репозиториями.
-
-### Ваш скрипт:
-```python
-#!/usr/bin/env python3
-
-import os
-from sys import argv
-
-cwd = os.getcwd()
-if len(argv) >= 2:
-    cwd = argv[1]
-bash_command = ["cd " + cwd, "git status"]
-result_os = os.popen(' && '.join(bash_command)).read()
-for result in result_os.split('\n'):
-    if result.find('modified') != -1:
-        prepare_result = result.replace('\tmodified:', '')
-        print(prepare_result)
-```
-
-### Вывод скрипта при запуске при тестировании:
-```
-$ python3 newpypy.py ~/
-	readme.md
-
-$ python3 newpypy.py
-	bar.txt
-	foo.txt
-	lol/kek/cheburek.txt
-	pypy.py
-```
-
-## Обязательная задача 4
-1. Наша команда разрабатывает несколько веб-сервисов, доступных по http. Мы точно знаем, что на их стенде нет никакой балансировки, кластеризации, за DNS прячется конкретный IP сервера, где установлен сервис. Проблема в том, что отдел, занимающийся нашей инфраструктурой очень часто меняет нам сервера, поэтому IP меняются примерно раз в неделю, при этом сервисы сохраняют за собой DNS имена. Это бы совсем никого не беспокоило, если бы несколько раз сервера не уезжали в такой сегмент сети нашей компании, который недоступен для разработчиков. Мы хотим написать скрипт, который опрашивает веб-сервисы, получает их IP, выводит информацию в стандартный вывод в виде: <URL сервиса> - <его IP>. Также, должна быть реализована возможность проверки текущего IP сервиса c его IP из предыдущей проверки. Если проверка будет провалена - оповестить об этом в стандартный вывод сообщением: [ERROR] <URL сервиса> IP mismatch: <старый IP> <Новый IP>. Будем считать, что наша разработка реализовала сервисы: `drive.google.com`, `mail.google.com`, `google.com`.
+В прошлый рабочий день мы создавали скрипт, позволяющий опрашивать веб-сервисы и получать их IP. К уже реализованному функционалу нам нужно добавить возможность записи JSON и YAML файлов, описывающих наши сервисы. Формат записи JSON по одному сервису: `{ "имя сервиса" : "его IP"}`. Формат записи YAML по одному сервису: `- имя сервиса: его IP`. Если в момент исполнения скрипта меняется IP у сервиса - он должен так же поменяться в yml и json файле.
 
 ### Ваш скрипт:
 ```python
@@ -105,14 +33,22 @@ $ python3 newpypy.py
 
 import socket
 import time
+import json
+import yaml
 
 services = {'drive.google.com': ' ', 'mail.google.com': ' ', 'google.com': ' '}
 
-while 1 == 1:
+while True:
+    temp = []
     for host in services:
         ip = socket.gethostbyname(host)
         if ip == services[host]:
             print(str(host) + '-' + ip)
+            temp.append({host:ip})
+            with open('dump.json', 'w') as outfile:
+                outfile.write(json.dumps(temp, indent=2))
+            with open('dump.yaml', 'w') as outfile:
+                outfile.write(yaml.dump(temp))
             time.sleep(1)
         elif ip != services[host]:
             print(str('[ERROR]') + str(host) + ' IP mistmatch: ' + services[host] + ' ' + ip)
@@ -131,4 +67,28 @@ $ sudo python3 web.py
 	drive.google.com-216.58.210.142
 	mail.google.com-216.58.210.165
 	google.com-216.58.209.206
+```
+
+### json-файл(ы), который(е) записал ваш скрипт:
+```json
+	[
+	  {
+	    "drive.google.com": "216.58.210.142"
+	  },
+	  {
+	    "mail.google.com": "216.58.209.165"
+	  },
+	  {
+	    "google.com": "216.58.209.206"
+	  }
+	]
+
+```
+
+### yml-файл(ы), который(е) записал ваш скрипт:
+```yaml
+	- drive.google.com: 216.58.210.142
+	- mail.google.com: 216.58.209.165
+	- google.com: 216.58.209.206
+
 ```

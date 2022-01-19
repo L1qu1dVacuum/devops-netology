@@ -1,145 +1,414 @@
 # devops-netology
-Домашние задания по курсу Dev-Ops
+
+# Курсовая работа по итогам модуля "DevOps и системное администрирование"
 
 ------
 
-1. Узнал, ознакомился.
+## 1. Создайте виртуальную машину Linux.
 
 
-2. Файлы, являющиеся жесткой ссылкой на один объект, не могут иметь разные права доступа и владельца, так как ссылаются на один inode и по сути являются одним и тем же файлом.
+	$ vagrant init #Инициализируем Vagrantfile
+
+	Изменил создал базовый Vagrantfile, присвоил статику:
+
+		Vagrant.configure("2") do |config|
+			config.vm.box = "bento/ubuntu-20.04"
+			config.vm.network "public_network", ip: "192.168.88.202"
+			end
+
+	$ vagrant up 
+ 	
+	$ vagrant ssh
+
+	$ sudo su
+
+	Для дальнейшего удобства создал общую дирректорию и смонтировал ее по адресу /media/shared
+
+## 2. Установите ufw и разрешите к этой машине сессии на порты 22 и 443, при этом трафик на интерфейсе localhost (lo) должен ходить свободно на все порты.
 
 
-3. Сделал `vagrant destroy`. Изменил Vagrantfile, поднял новую виртуальную машину. (Крашится на VB 6.1.28)
+	$ apt install ufw -y
+
+	$ ufw status
+
+		Status: inactive
+
+	$ ufw enable
+
+		Command may disrupt existing ssh connections. Proceed with operation (y|n)? y
+		Firewall is active and enabled on system startup
+
+	$ ufw default deny incoming
+
+	$ ufw default allow outgoing
+
+	$ ufw allow 22
+
+	$ ufw allow 443
+
+	$ ufw allow from 127.0.0.1 
+
+	$ ufw status #Порты 22 и 443 открыты, на локалхосте доступно все:
+
+		Status: active
+
+		To                         Action      From
+		--                         ------      ----
+		22                         ALLOW       Anywhere
+		443                        ALLOW       Anywhere
+		22 (v6)                    ALLOW       Anywhere (v6)
+		443 (v6)                   ALLOW       Anywhere (v6)
+		Anywhere                   ALLOW       127.0.0.1
 
 
-4. Разбил.
+## 3. Установите hashicorp vault.
+
+
+	$ curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+
+		OK
+
+	$ apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 
 		...
-		Device     Boot   Start     End Sectors  Size Id Type
-		/dev/sdb1          2048 4196351 4194304    2G 83 Linux
-		/dev/sdb2       4196352 5242879 1046528  511M 83 Linux	
-		...
+		Reading package lists... Done
 
-
-5. `$sudo sfdisk -d /dev/sdb | sudo sfdisk /dev/sdc`
-
-   `$sudo fdisk -l`
+	$ apt-get update && sudo apt-get install vault -y
 
 		...
-		Device     Boot   Start     End Sectors  Size Id Type
-		/dev/sdc1          2048 4196351 4194304    2G 83 Linux
-		/dev/sdc2       4196352 5242879 1046528  511M 83 Linux	
+		Vault TLS key and self-signed certificate have been generated in '/opt/vault/tls'.
+
+	
+## 4. Cоздайте центр сертификации по инструкции и выпустите сертификат для использования его в настройке веб-сервера nginx (срок жизни сертификата - месяц).
+
+
+	$ apt install jq -y
+
+		...
+		Processing triggers for libc-bin (2.31-0ubuntu9.2) ...
+
+	$ systemctl enable vault --now
+
+	$ nano /etc/vault.d/vault.hcl
+
+	Раскоментировал доступ к Волту по http:
+
+		# HTTP listener
+		listener "tcp" {
+		  address = "127.0.0.1:8200"
+		  tls_disable = 1
+		}
+
+	Закоментировал доступ к Волту по https:
+
+		# HTTPS listener
+		#listener "tcp" {
+		#  address       = "0.0.0.0:8200"
+		#  tls_cert_file = "/opt/vault/tls/tls.crt"
+		#  tls_key_file  = "/opt/vault/tls/tls.key"
+		#}
+
+	$ systemctl restart vault
+
+	$ export VAULT_ADDR=http://127.0.0.1:8200
+
+	$ nano /etc/environment
+
+	Добавил адрес Волта в системные переменные для восстановления доступа при старте
+
+		VAULT_ADDR=http://127.0.0.1:8200
+
+	$ vault status
+
+		Key                Value
+		---                -----
+		Seal Type          shamir
+		Initialized        true
+		Sealed             true
+		Total Shares       5
+		Threshold          3
+		Unseal Progress    0/3
+		Unseal Nonce       n/a
+		Version            1.9.2
+		Storage Type       file
+		HA Enabled         false
+	
+	$ vault operator init
+
+		Unseal Key 1: 7JqCXRPALfaQVahC//e1APE/0Yc5W2Zn5Gs43EN5irZE
+		Unseal Key 2: m+YazcQ6JmMFs4Iy3kRLlztHd/3EC2IHVMJQsC6tXFKp
+		Unseal Key 3: K15rEGSxsTHfOKxlodlCtxygMdGZeTSw6HkMTVT7fxAK
+		Unseal Key 4: 8hpgrFuG9Owj7w5DxRRLWkeKET+E7+K5eUioafT3K/l5
+		Unseal Key 5: gzlNC1MEgEEFBcN3hTOFh5+UnvlgUqcVn0eE2v/1cb7Q
+
+		Initial Root Token: s.RC8LjL6O71wVmiuRvtLsEPX2
+
+		Vault initialized with 5 key shares and a key threshold of 3. Please securely
+		distribute the key shares printed above. When the Vault is re-sealed,
+		restarted, or stopped, you must supply at least 3 of these keys to unseal it
+		before it can start servicing requests.
+
+		Vault does not store the generated master key. Without at least 3 keys to
+		reconstruct the master key, Vault will remain permanently sealed!
+
+		It is possible to generate new unseal keys, provided you have a quorum of
+		existing unseal keys shares. See "vault operator rekey" for more information.
+
+	$ vault operator unseal
+
+	Unseal Key (will be hidden): 7JqCXRPALfaQVahC//e1APE/0Yc5W2Zn5Gs43EN5irZE
+
+		Unseal Key (will be hidden):
+		Key                Value
+		---                -----
+		Seal Type          shamir
+		Initialized        true
+		Sealed             true
+		Total Shares       5
+		Threshold          3
+		Unseal Progress    1/3
+		Unseal Nonce       2e23ffca-c59b-3fdb-bc6d-f397ef38106a
+		Version            1.9.2
+		Storage Type       file
+		HA Enabled         false
+
+	$ vault operator unseal
+
+	Unseal Key (will be hidden): m+YazcQ6JmMFs4Iy3kRLlztHd/3EC2IHVMJQsC6tXFKp
+
+		Unseal Key (will be hidden):
+		Key                Value
+		---                -----
+		Seal Type          shamir
+		Initialized        true
+		Sealed             true
+		Total Shares       5
+		Threshold          3
+		Unseal Progress    2/3
+		Unseal Nonce       2e23ffca-c59b-3fdb-bc6d-f397ef38106a
+		Version            1.9.2
+		Storage Type       file
+		HA Enabled         false 
+
+	$ vault operator unseal #Снимаем третью печать
+
+	Unseal Key (will be hidden): K15rEGSxsTHfOKxlodlCtxygMdGZeTSw6HkMTVT7fxAK
+
+		Unseal Key (will be hidden):
+		Key                Value
+		---                -----
+		Seal Type          shamir
+		Initialized        true
+		Sealed             false
+		Total Shares       5
+		Threshold          3
+		Unseal Progress    3/3
+		Unseal Nonce       2e23ffca-c59b-3fdb-bc6d-f397ef38106a
+		Version            1.9.2
+		Storage Type       file
+		HA Enabled         false 
+
+	$ vault login #Логинимся в хранилище
+
+		Token (will be hidden): s.RC8LjL6O71wVmiuRvtLsEPX2
+
+		Success! You are now authenticated. The token information displayed below
+		is already stored in the token helper. You do NOT need to run "vault login"
+		again. Future Vault requests will automatically use this token.
+
+		Key                  Value
+		---                  -----
+		token                s.RC8LjL6O71wVmiuRvtLsEPX2
+		token_accessor       LAegWUxSVcrHobb95UUVj0OL
+		token_duration       ∞
+		token_renewable      false
+		token_policies       ["root"]
+		identity_policies    []
+		policies             ["root"]
+
+	Создаем корневой сертификат:
+
+	$ vault secrets enable pki
+
+		Success! Enabled the pki secrets engine at: pki/
+
+	$ vault secrets tune -max-lease-ttl=87600h pki
+
+		Success! Tuned the secrets engine at: pki/
+
+	$ vault write -field=certificate pki/root/generate/internal \
+     	    
+	    common_name="term.paper" \
+
+     	    ttl=87600h > /media/shared/CA_cert.crt
+
+	$ vault write pki/config/urls \
+
+	    issuing_certificates="$VAULT_ADDR/v1/pki/ca" \
+
+	    crl_distribution_points="$VAULT_ADDR/v1/pki/crl"
+
+		Success! Data written to: pki/config/urls
+
+	Создаем промежуточный сертификат:
+
+	$ vault secrets enable -path=pki_int pki
+	
+		Success! Enabled the pki secrets engine at: pki_int/
+
+	$ vault secrets tune -max-lease-ttl=43800h pki_int
+
+		Success! Tuned the secrets engine at: pki_int/
+
+	$ vault write -format=json pki_int/intermediate/generate/internal \
+
+	     common_name="term.paper Intermediate Authority" \
+
+	     | jq -r '.data.csr' > pki_intermediate.csr
+
+	$ vault write -format=json pki/root/sign-intermediate csr=@pki_intermediate.csr \
+
+	     format=pem_bundle ttl="43800h" \
+
+	     | jq -r '.data.certificate' > intermediate.cert.pem
+
+	$ vault write pki_int/intermediate/set-signed \ 
+
+	     certificate=@intermediate.cert.pem
+
+		Success! Data written to: pki_int/intermediate/set-signed
+
+	Создаем роль:
+
+	$ vault write pki_int/roles/term-dot-paper \
+
+	     allowed_domains="term.paper" \
+
+	     allow_subdomains=true \
+
+	     max_ttl="720h"
+
+		Success! Data written to: pki_int/roles/term-dot-paper
+
+	Запрашиваем сертификаты конечного субьекта сразу в необходимую директорию:
+
+	$ vault write -format=json pki_int/issue/term-dot-paper common_name="test.term.paper" ttl="730h" > /etc/ssl/website.crt \
+
+	    cat /etc/ssl/website.crt | jq -r .data.certificate > /etc/ssl/website.pem \
+	    cat /etc/ssl/website.crt | jq -r .data.ca_chain[] >> /etc/ssl/website.pem \
+	    cat /etc/ssl/website.crt | jq -r .data.private_key > /etc/ssl/website.key
+
+
+## 5. Установите корневой сертификат созданного центра сертификации в доверенные в хостовой системе.
+
+	Тык
+
+	Тык
+
+	Тык
+	
+
+	
+
+
+## 6. Установите nginx.
+
+
+	$ apt install nginx -y
+
+	$ systemctl enable nginx
+
+		Synchronizing state of nginx.service with SysV service script with /lib/systemd/systemd-sysv-install.
+		Executing: /lib/systemd/systemd-sysv-install enable nginx
+
+	$ systemctl is-enabled nginx
+
+		enabled
+
+	$ service nginx start
+
+	$ service nginx status
+
+		● nginx.service - A high performance web server and a reverse proxy server
+		     Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+		     Active: active (running) since Tue 2022-01-18 13:38:40 UTC; 44s ago
+		       Docs: man:nginx(8)
+		   Main PID: 2070 (nginx)
+		      Tasks: 3 (limit: 1071)
+		     Memory: 5.1M
+		     CGroup: /system.slice/nginx.service
+		             ├─2070 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+		             ├─2071 nginx: worker process
+		             └─2072 nginx: worker process
+
+		Jan 18 13:38:40 vagrant systemd[1]: Starting A high performance web server and a reverse proxy server...
+		Jan 18 13:38:40 vagrant systemd[1]: Started A high performance web server and a reverse proxy server.
+
+
+## 7. По инструкции настройте nginx на https, используя ранее подготовленный сертификат:
+
+
+	$ nano /etc/nginx/nginx.conf
+
+	Добавил блок:
+
+		...
+		server {
+		    listen              443 ssl;
+		    server_name         test.term.paper;
+		    ssl_certificate     /etc/ssl/website.pem;
+		    ssl_certificate_key /etc/ssl/website.key;
+		    ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
+		    ssl_ciphers         HIGH:!aNULL:!MD5;
+		}
 		...
 
-
-6. `$sudo mdadm --create /dev/md0 --level=1  --raid-devices=2 /dev/sdb1 /dev/sdc1`
-
-		sdb                    8:16   0  2.5G  0 disk		
-		├─sdb1                 8:17   0    2G  0 part
-		│ └─md0                9:0    0    2G  0 raid1
-		└─sdb2                 8:18   0  511M  0 part
-
-		sdc                    8:32   0  2.5G  0 disk
-		├─sdc1                 8:33   0    2G  0 part
-		│ └─md0                9:0    0    2G  0 raid1
-		└─sdc2                 8:34   0  511M  0 part
+	$ service nginx reload
 
 
-7. `$sudo mdadm --create /dev/md1 --level=0  --raid-devices=2 /dev/sdb2 /dev/sdc2`
+## 8. Откройте в браузере на хосте https адрес страницы, которую обслуживает сервер nginx.
 
-		sdb                    8:16   0  2.5G  0 disk
-		├─sdb1                 8:17   0    2G  0 part
-		│ └─md0                9:0    0    2G  0 raid1
-		└─sdb2                 8:18   0  511M  0 part
-		  └─md1                9:1    0 1018M  0 raid0
-		sdc                    8:32   0  2.5G  0 disk
-		├─sdc1                 8:33   0    2G  0 part
-		│ └─md0                9:0    0    2G  0 raid1
-		└─sdc2                 8:34   0  511M  0 part
-		  └─md1                9:1    0 1018M  0 raid0
+	В файл C:\Windows\System32\drivers\etc\hosts добавил строку:
 
-8. `$sudo pvcreate /dev/md0 /dev/md1`
-
-		Physical volume "/dev/md0" successfully created.
-  		Physical volume "/dev/md1" successfully created.
+		...
+		192.168.88.205  test.term.paper
 
 
-9. `$sudo vgcreate vg0 /dev/md0 /dev/md1`
-
-		Volume group "vg0" successfully created
+## 9. Создайте скрипт, который будет генерировать новый сертификат в vault:
 
 
-10. `$sudo lvcreate -L 100M vg0 /dev/md1`
+	- генерируем новый сертификат так, чтобы не переписывать конфиг nginx;
+	- перезапускаем nginx для применения нового сертификата.
 
-		Logical volume "lvol0" created
+	$ mkdir /etc/scripts
 
+	$ touch /etc/scripts/reissue.sh
 
-11. `$sudo mkfs.ext4 /dev/vg0/lvol0`
+	$ chmod +x /etc/scripts/reissue.sh
 
+	$ nano /etc/scripts/reissue.sh
 
-12. `$mkdir /tmp/new`
+		```bash
+		#!/usr/bin/env bash
 
-    `$sudo mount /dev/vg0/lvol0 /tmp/new`
-
-
-13. `$sudo wget https://mirror.yandex.ru/ubuntu/ls-lR.gz -O /tmp/new/test.gz`
-
-
-14. `$sudo lsblk`
-
-		NAME                 MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT
-		sda                    8:0    0   64G  0 disk
-		├─sda1                 8:1    0  512M  0 part  /boot/efi
-		├─sda2                 8:2    0    1K  0 part
-		└─sda5                 8:5    0 63.5G  0 part
-		  ├─vgvagrant-root   253:0    0 62.6G  0 lvm   /
-		  └─vgvagrant-swap_1 253:1    0  980M  0 lvm   [SWAP]
-		sdb                    8:16   0  2.5G  0 disk
-		├─sdb1                 8:17   0    2G  0 part
-		│ └─md0                9:0    0    2G  0 raid1
-		└─sdb2                 8:18   0  511M  0 part
-		  └─md1                9:1    0 1018M  0 raid0
-		    └─vg0-lvol0      253:2    0  100M  0 lvm   /tmp/new
-		sdc                    8:32   0  2.5G  0 disk
-		├─sdc1                 8:33   0    2G  0 part
-		│ └─md0                9:0    0    2G  0 raid1
-		└─sdc2                 8:34   0  511M  0 part
-		  └─md1                9:1    0 1018M  0 raid0
-		    └─vg0-lvol0      253:2    0  100M  0 lvm   /tmp/new
+		vault operator unseal 7JqCXRPALfaQVahC//e1APE/0Yc5W2Zn5Gs43EN5irZE > /dev/null 2>&1
+		vault operator unseal m+YazcQ6JmMFs4Iy3kRLlztHd/3EC2IHVMJQsC6tXFKp > /dev/null 2>&1
+		vault operator unseal K15rEGSxsTHfOKxlodlCtxygMdGZeTSw6HkMTVT7fxAK > /dev/null 2>&1
+		vault write -format=json pki_int/issue/term-dot-paper common_name="test.term.paper" ttl="730h" > /etc/ssl/website.crt
+		cat /etc/ssl/website.crt | jq -r .data.certificate > /etc/ssl/website.pem
+		cat /etc/ssl/website.crt | jq -r .data.ca_chain[] >> /etc/ssl/website.pem
+		cat /etc/ssl/website.crt | jq -r .data.private_key > /etc/ssl/website.key
+		rm /etc/ssl/website.crt
+		systemctl reload nginx
+		```
 
 
-15. `$gzip -t /tmp/new/test.gz && echo $?`
-
-		0
+## 10. Поместите скрипт в crontab, чтобы сертификат обновлялся какого-то числа каждого месяца в удобное для вас время.
 
 
-16. `$sudo pvmove /dev/md1 /dev/md0`
+	$ crontab -e
 
-		/dev/md1: Moved: 16.00%
-		/dev/md1: Moved: 100.00%	
+	Добавил строку: 
 
+		17 1 19 * * /etc/scripts/reissue.sh
 
-17. `$sudo mdadm /dev/md0 -f /dev/sdb1`
-
-		mdadm: set /dev/sdb1 faulty in /dev/md0
-
-
-18. `$dmesg |grep -P 'md0|failure'`
-
-		[  949.895748] md/raid1:md0: not clean -- starting background reconstruction
-		[  949.895750] md/raid1:md0: active with 2 out of 2 mirrors
-		[  949.895764] md0: detected capacity change from 0 to 2144337920
-		[  949.898997] md: resync of RAID array md0
-		[  962.582830] md: md0: resync done.
-		[ 4490.572347] md/raid1:md0: Disk failure on sdb1, disabling device.
-		               md/raid1:md0: Operation continuing on 1 devices.
-
-
-19. `$gzip -t /tmp/new/test.gz && echo $?`
-
-		0
-
-
-20. `$^D`
-
-    `$vagrant destroy`

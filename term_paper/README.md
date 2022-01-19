@@ -280,17 +280,17 @@
 
  `$ vault write -field=certificate pki/root/generate/internal \`
      	    
-    common_name="term.paper" \
+ `> common_name="term.paper" \`
 
-    ttl=87600h > /media/shared/CA_cert.crt
+ `> ttl=87600h > /media/shared/CA_cert.crt`
     
  Создаем пути для невалидных сертификатов и точек дистрибуции:
 
  `$ vault write pki/config/urls \`
 
-    issuing_certificates="$VAULT_ADDR/v1/pki/ca" \
+ `> issuing_certificates="$VAULT_ADDR/v1/pki/ca" \`
 
-    crl_distribution_points="$VAULT_ADDR/v1/pki/crl"
+ `> crl_distribution_points="$VAULT_ADDR/v1/pki/crl"`
 
     Success! Data written to: pki/config/urls
 
@@ -306,19 +306,19 @@
 
  `$ vault write -format=json pki_int/intermediate/generate/internal \`
 
-    common_name="term.paper Intermediate Authority" \
+ `> common_name="term.paper Intermediate Authority" \`
 
-    | jq -r '.data.csr' > pki_intermediate.csr
+ `> | jq -r '.data.csr' > pki_intermediate.csr`
 
  `$ vault write -format=json pki/root/sign-intermediate csr=@pki_intermediate.csr \`
 
-    format=pem_bundle ttl="43800h" \
+ `> format=pem_bundle ttl="43800h" \`
 
-    | jq -r '.data.certificate' > intermediate.cert.pem
+ `> | jq -r '.data.certificate' > intermediate.cert.pem`
 
  `$ vault write pki_int/intermediate/set-signed \` 
 
-    certificate=@intermediate.cert.pem
+ `> certificate=@intermediate.cert.pem`
 
     Success! Data written to: pki_int/intermediate/set-signed
 
@@ -326,11 +326,11 @@
 
  `$ vault write pki_int/roles/term-dot-paper \`
 
-    allowed_domains="term.paper" \
+ `> allowed_domains="term.paper" \`
 
-    allow_subdomains=true \
+ `> allow_subdomains=true \`
 
-    max_ttl="720h"
+ `> max_ttl="720h"`
 
     Success! Data written to: pki_int/roles/term-dot-paper
 
@@ -338,9 +338,9 @@
 
  `$ vault write -format=json pki_int/issue/term-dot-paper common_name="test.term.paper" ttl="730h" > /etc/ssl/website.crt \`
 
-    cat /etc/ssl/website.crt | jq -r .data.certificate > /etc/ssl/website.pem \
-    cat /etc/ssl/website.crt | jq -r .data.ca_chain[] >> /etc/ssl/website.pem \
-    cat /etc/ssl/website.crt | jq -r .data.private_key > /etc/ssl/website.key
+ `> cat /etc/ssl/website.crt | jq -r .data.certificate > /etc/ssl/website.pem \`
+ `> cat /etc/ssl/website.crt | jq -r .data.ca_chain[] >> /etc/ssl/website.pem \`
+ `> cat /etc/ssl/website.crt | jq -r .data.private_key > /etc/ssl/website.key`
 
 
 ## 5. Установите корневой сертификат созданного центра сертификации в доверенные в хостовой системе.

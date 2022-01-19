@@ -24,7 +24,7 @@
 
  `$ sudo su`
 
- Для дальнейшего удобства создал общую дирректорию и смонтировал ее по адресу /media/shared
+ Для дальнейшего удобства создал общую директорию и смонтировал ее по адресу /media/shared
 
 
 ## 2. Установите ufw и разрешите к этой машине сессии на порты 22 и 443, при этом трафик на интерфейсе localhost (lo) должен ходить свободно на все порты.
@@ -339,7 +339,9 @@
  `$ vault write -format=json pki_int/issue/term-dot-paper common_name="test.term.paper" ttl="730h" > /etc/ssl/website.crt \`
 
  `> cat /etc/ssl/website.crt | jq -r .data.certificate > /etc/ssl/website.pem \`
+ 
  `> cat /etc/ssl/website.crt | jq -r .data.ca_chain[] >> /etc/ssl/website.pem \`
+ 
  `> cat /etc/ssl/website.crt | jq -r .data.private_key > /etc/ssl/website.key`
 
 

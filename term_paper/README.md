@@ -417,4 +417,9 @@ service nginx reload
  Добавил строку на запуск в 17 минут 01 час каждого 19го числа: 
 
     17 1 19 * * /etc/scripts/reissue.sh
+    
+![Cron working](https://github.com/L1qu1dVacuum/devops-netology/blob/main/term_paper/Images/Cron.png)
 
+![Cron working result 01](https://github.com/L1qu1dVacuum/devops-netology/blob/main/term_paper/Images/19.01_01.png)
+
+![Cron working result 02](https://github.com/L1qu1dVacuum/devops-netology/blob/main/term_paper/Images/19.01_02.png)

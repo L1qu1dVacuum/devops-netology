@@ -7,9 +7,9 @@
 ## 1. Создайте виртуальную машину Linux.
 
 
- $ vagrant init #Инициализируем Vagrantfile
+ `$ vagrant init` 
 
- Изменил создал базовый Vagrantfile, присвоил статику:
+ Создал базовый Vagrantfile, присвоил статику:
 
 		Vagrant.configure("2") do |config|
 			config.vm.box = "bento/ubuntu-20.04"

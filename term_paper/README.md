@@ -472,28 +472,42 @@
 
  `$ chmod +x /etc/scripts/reissue.sh`
  
- Так как особенности скрипта заданием не конкретизировались, делаем его максимально простым. 
- 
- Добавляем снятие печатей с хранилища с небольшой задержкой, на случай рестарта сервера. 
- 
- Автоматически распечатывать кранилище небезопасно но в тестовой среде это упрощает нам задачу. 
+ Так как автоматически распечатывать хранилище не безопасно, то эта процедура будет проводиться в ручном режиме.
 
+ Пишем скрипт который проверяет хралилище на распечатанность, генерирует сертификаты и обновляет конфигурацию nginx.
+ 
  `$ nano /etc/scripts/reissue.sh`
 
 ```bash
 #!/usr/bin/env bash
 
-sleep 5
-vault operator unseal 7JqCXRPALfaQVahC//e1APE/0Yc5W2Zn5Gs43EN5irZE > /dev/null 2>&1
-vault operator unseal m+YazcQ6JmMFs4Iy3kRLlztHd/3EC2IHVMJQsC6tXFKp > /dev/null 2>&1
-vault operator unseal K15rEGSxsTHfOKxlodlCtxygMdGZeTSw6HkMTVT7fxAK > /dev/null 2>&1
-vault write -format=json pki_int/issue/term-dot-paper common_name="test.term.paper" ttl="730h" > /etc/ssl/website.crt
-cat /etc/ssl/website.crt | jq -r .data.certificate > /etc/ssl/website.pem
-cat /etc/ssl/website.crt | jq -r .data.ca_chain[] >> /etc/ssl/website.pem
-cat /etc/ssl/website.crt | jq -r .data.private_key > /etc/ssl/website.key
-rm /etc/ssl/website.crt
-service nginx reload
+#export VAULT_ADDR=http://127.0.0.1:8200
+
+#export VAULT_TOKEN=$(cat /root/.vault-token)
+
+crt_war="/etc/ssl/website.crt"
+
+vault status &> /dev/null
+    if [[ ! $? == "0" ]]
+    then
+        echo "VaultSealManager-[$(date +'%X %x')]-[ERROR]: Local Vault is sealed." | tee -a /root/vault.log
+        exit 1
+    else
+        vault write -format=json pki_int/issue/term-dot-paper common_name="test.term.paper" ttl="730h" > $crt_war
+        cat $crt_war | jq -r .data.certificate > /etc/ssl/website.pem
+        cat $crt_war | jq -r .data.ca_chain[] >> /etc/ssl/website.pem
+        cat $crt_war | jq -r .data.private_key > /etc/ssl/website.key
+        rm $crt_war
+        systemctl reload nginx
+        exit 0
+    fi
 ```
+
+ В случае если хранилище оказывается запечатанным скрипт выдаст в stdout сообщение следующего содержания:
+
+    VaultSealManager-[09:37:01 PM 01/24/2022]-[ERROR]: Local Vault is sealed.
+
+ А так же продублирует его файл vault.log c сохранением хронолонии неудачных попыток.
 
 
 ## 10. Поместите скрипт в crontab, чтобы сертификат обновлялся какого-то числа каждого месяца в удобное для вас время.

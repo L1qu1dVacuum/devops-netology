@@ -45,22 +45,22 @@
 
  VirtualBox
 
-	```console
-	**nieles@debian:~$** VBoxManage -v
+	```shell
+	nieles@debian:~$ VBoxManage -v
 	6.1.26r145957
 	```
 
  Vagrant
 
-	```console
-	**nieles@debian:~$** vagrant -v
+	```shell
+	nieles@debian:~$ vagrant -v
 	Vagrant 2.2.19
 	```
 	
  Ansible
 
-	```console
-	**nieles@debian:~$** ansible --version
+	```shell
+	nieles@debian:~$ ansible --version
 	ansible [core 2.12.2]
 	  config file = None
 	  configured module search path = ['/home/nieles/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
@@ -90,6 +90,6 @@
 	This system is built by the Bento project by Chef Software
 	More information can be found at https://github.com/chef/bento
 	Last login: Tue Feb  1 15:22:36 2022 from 10.0.2.2
-	**vagrant@server1:~$** docker ps
+	vagrant@server1:~$ docker ps
 	CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 ```

@@ -76,7 +76,6 @@
 ## Задача 4
 
 
-	```console
 	**nieles@debian:~/education/vagrant$** vagrant ssh
 	Welcome to Ubuntu 20.04.3 LTS (GNU/Linux 5.4.0-91-generic x86_64)
 
@@ -92,5 +91,4 @@
 	Last login: Tue Feb  1 15:22:36 2022 from 10.0.2.2
 	**vagrant@server1:~$** docker ps
 	CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-	```
 

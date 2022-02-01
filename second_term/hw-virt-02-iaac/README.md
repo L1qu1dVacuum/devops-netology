@@ -45,21 +45,21 @@
 
  VirtualBox
 
-	```shell
+```shell
 	nieles@debian:~$ VBoxManage -v
 	6.1.26r145957
-	```
+```
 
  Vagrant
 
-	```shell
+```shell
 	nieles@debian:~$ vagrant -v
 	Vagrant 2.2.19
-	```
+```
 	
  Ansible
 
-	```shell
+```shell
 	nieles@debian:~$ ansible --version
 	ansible [core 2.12.2]
 	  config file = None
@@ -70,7 +70,7 @@
 	  python version = 3.9.2 (default, Feb 28 2021, 17:03:44) [GCC 10.2.1 20210110]
 	  jinja version = 3.0.3
 	  libyaml = True
-	```
+```
 
 
 ## Задача 4

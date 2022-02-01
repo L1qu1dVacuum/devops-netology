@@ -76,7 +76,7 @@
 ## Задача 4
 
 
-```bash
+```shell
 	nieles@debian:~/education/vagrant$ vagrant ssh
 	Welcome to Ubuntu 20.04.3 LTS (GNU/Linux 5.4.0-91-generic x86_64)
 

@@ -73,20 +73,20 @@
 
  $ docker exec -it 2894b81fcdbc bash
 
- # echo "hello netology" > /data/hellofile
+ \# echo "hello netology" > /data/hellofile
 
  ^D
 
  $ docker exec -it 5f99c2176e32 bash
 
- # ls -lha /data
+ \# ls -lha /data
 
 	total 12K
 	drwxr-xr-x 2 root root 4.0K Feb  8 11:34 .
 	drwxr-xr-x 1 root root 4.0K Feb  8 11:32 ..
 	-rw-r--r-- 1 root root   15 Feb  8 11:34 hellofile
 
- # cat /data/hellofile
+ \# cat /data/hellofile
 
 	hello netology
 

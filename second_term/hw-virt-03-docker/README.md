@@ -33,7 +33,7 @@
 
 	sha256:36707114bd738e1184cbfef27035e03403031837104b7994143ece58b3db2c08
 
- https://hub.docker.com/r/l1qu1dvacuum/nginx_image/tags
+ [Ссылка на форк](https://hub.docker.com/r/l1qu1dvacuum/nginx_image/tags)
 
 
 ## Задача 2
@@ -143,5 +143,5 @@
 
  $ docker push l1qu1dvacuum/ansible:2.10.7
 
- https://hub.docker.com/r/l1qu1dvacuum/ansible
+ [Ссылка на образ](https://hub.docker.com/r/l1qu1dvacuum/ansible)
 

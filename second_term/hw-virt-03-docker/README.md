@@ -33,7 +33,7 @@
 
 	sha256:36707114bd738e1184cbfef27035e03403031837104b7994143ece58b3db2c08
 
- https://hub.docker.com/r/l1qu1dvacuum/nginx_image/tags
+ [Ссылка на форк](https://hub.docker.com/r/l1qu1dvacuum/nginx_image/tags)
 
 
 ## Задача 2
@@ -73,20 +73,20 @@
 
  $ docker exec -it 2894b81fcdbc bash
 
- # echo "hello netology" > /data/hellofile
+ \# echo "hello netology" > /data/hellofile
 
  ^D
 
  $ docker exec -it 5f99c2176e32 bash
 
- # ls -lha /data
+ \# ls -lha /data
 
 	total 12K
 	drwxr-xr-x 2 root root 4.0K Feb  8 11:34 .
 	drwxr-xr-x 1 root root 4.0K Feb  8 11:32 ..
 	-rw-r--r-- 1 root root   15 Feb  8 11:34 hellofile
 
- # cat /data/hellofile
+ \# cat /data/hellofile
 
 	hello netology
 
@@ -143,5 +143,5 @@
 
  $ docker push l1qu1dvacuum/ansible:2.10.7
 
- https://hub.docker.com/r/l1qu1dvacuum/ansible
+ [Ссылка на образ](https://hub.docker.com/r/l1qu1dvacuum/ansible)
 

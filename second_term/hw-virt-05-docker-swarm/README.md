@@ -29,9 +29,11 @@
 
  - Скриншот из терминала (консоли), с выводом команды:
 
-	docker node ls
+```shell
+docker node ls
+```
 
- ![Swarm_02]()
+ ![Swarm_02](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-virt-05-docker-swarm/Images/2022-02-19%20(1).png)
 
 
 ## Задача 3
@@ -39,9 +41,11 @@
 
  - Cкриншот из терминала (консоли), с выводом команды:
 
-	docker service ls
+```shell
+docker service ls
+```
 
- ![Swarm_03]()
+ ![Swarm_03](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-virt-05-docker-swarm/Images/2022-02-19%20(3).png)
 
 
 ## Задача 4
@@ -49,5 +53,6 @@
 
  После каждого рестарта докер демона, ноды в рое обмениваются TLS ключами которые отвечают за шифрование соединения между ними и ключами шифрования Raft логов на диске, в которые как я понял, пишутся результаты голосования и менеджер-статусы нод в рое. Все эти ключи хранятся в памяти в нешифрованном виде и могут быть скомпрометированны. Автолок в свою очередь дает возможность проконтролировать этот процесс и разблокировать доступ к ключам вручную.
 
- ![Swarm_03]()
- ![Swarm_03]()
+ ![Swarm_03](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-virt-05-docker-swarm/Images/2022-02-19%20(4).png)
+ 
+ ![Swarm_03](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-virt-05-docker-swarm/Images/2022-02-19%20(5).png)

@@ -29,5 +29,3 @@
 
  ![Grafana_03](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-virt-04-docker-compose/Images/yc_vm.png?raw=true)
 
-
-## Задача 4

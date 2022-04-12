@@ -113,5 +113,3 @@ $ run -d --rm --name postgresql_db_2 -e POSTGRES_PASSWORD=postgres -ti -p 5432:5
 
 $ docker exec -i postgresql_db_2 psql -U postgres -d test_db -f /var/lib/postgresql/backup/backup_01.sql
 ```
-
-![SQL_02](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-02-sql/Images/2022-04-12.png)

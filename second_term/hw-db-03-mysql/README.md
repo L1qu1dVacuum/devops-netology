@@ -33,7 +33,7 @@ $ docker exec -i mysql_db_1 sh -c 'exec mysql -u root --password=mysql test_db' 
 
 $ docker exec -it mysql_db_1 /bin/bash
 
-\# mysql -u root -p test_db --password=mysql
+# mysql -u root -p test_db --password=mysql
 
 mysql> \s
 ```
@@ -47,8 +47,8 @@ mysql> SHOW TABLES FROM test_db;
 mysql> SELECT COUNT(*) FROM orders WHERE price >300;
 ```
 
-![SQL_03]()
-![SQL_03]()
+![SQL_03](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-03-mysql/Images/2022-04-15%20(1).png?raw=true)
+![SQL_03](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-03-mysql/Images/2022-04-15%20(2).png?raw=true)
 
 
 ## Задача 2
@@ -70,7 +70,7 @@ mysql> GRANT SELECT ON test_db.orders TO 'test'@'localhost';
 mysql> SELECT * FROM INFORMATION_SCHEMA.USER_ATTRIBUTES WHERE USER='test';
 ```
 
-![SQL_03]()
+![SQL_03](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-03-mysql/Images/2022-04-15%20(3).png?raw=true)
 
 
 ## Задача 3
@@ -88,17 +88,17 @@ mysql> ALTER TABLE orders ENGINE = InnoDB;
 mysql> SHOW PROFILES;
 ```
 
-![SQL_03]()
-![SQL_03]()
-![SQL_03]()
-![SQL_03]()
+![SQL_03](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-03-mysql/Images/2022-04-19.png?raw=true)
+![SQL_03](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-03-mysql/Images/2022-04-19%20(1).png?raw=true)
+![SQL_03](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-03-mysql/Images/2022-04-19%20(2).png?raw=true)
+![SQL_03](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-03-mysql/Images/2022-04-19%20(3).png?raw=true)
 
 
 ## Задача 4
 
 
 ```bash
-\# cat << EOF >> /etc/mysql/my.cnf
+# cat << EOF >> /etc/mysql/my.cnf
 
 > innodb_flush_log_at_trx_commit=0
 
@@ -112,7 +112,7 @@ mysql> SHOW PROFILES;
 
 > EOF
 
-\# cat /etc/mysql/my.cnf
+# cat /etc/mysql/my.cnf
 ```
 
-![SQL_03]()
+![SQL_03](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-03-mysql/Images/2022-04-19%20(4).png?raw=true)

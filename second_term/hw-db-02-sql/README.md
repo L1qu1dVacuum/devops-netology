@@ -28,7 +28,7 @@ volumes:
   vol2:
 ```
 
-![SQL_02]()
+![SQL_02](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-02-sql/Images/2022-04-11.png)
 
 
 ## Задача 2
@@ -50,10 +50,10 @@ test_db=\# GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.clients TO "test
 test_db=\# GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.orders TO "test-simple-user";
 ```
 
-![SQL_02]()
-![SQL_02]()
-![SQL_02]()
-![SQL_02]()
+![SQL_02](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-02-sql/Images/2022-04-11%20(1).png)
+![SQL_02](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-02-sql/Images/2022-04-11%20(2).png)
+![SQL_02](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-02-sql/Images/2022-04-11%20(3).png)
+![SQL_02](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-02-sql/Images/2022-04-11%20(4).png)
 
 
 ## Задача 3
@@ -69,8 +69,8 @@ test_db=\# SELECT COUNT (*) FROM orders;
 test_db=\# SELECT COUNT (*) FROM clients;
 ```
 
-![SQL_02]()
-![SQL_02]()
+![SQL_02](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-02-sql/Images/2022-04-11%20(5).png)
+![SQL_02](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-02-sql/Images/2022-04-11%20(6).png)
 
 
 ## Задача 4
@@ -86,7 +86,7 @@ test_db=\# UPDATE clients SET booking = 5 WHERE id = 3;
 test_db=\# SELECT * FROM clients WHERE booking IS NOT NULL;
 ```
 
-![SQL_02]()
+![SQL_02](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-02-sql/Images/2022-04-11%20(7).png)
 
 
 ## Задача 5
@@ -96,7 +96,7 @@ test_db=\# SELECT * FROM clients WHERE booking IS NOT NULL;
 test_db=\# EXPLAIN SELECT * FROM clients WHERE booking IS NOT NULL;
 ```
 
-![SQL_02]()
+![SQL_02](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-02-sql/Images/2022-04-11%20(8).png)
 
 Было произведено последовательное сканирование таблицы клиентов, показаны затраты времени и ресурсов, и фильтр на основании которого выводились данные.
 
@@ -113,5 +113,3 @@ $ run -d --rm --name postgresql_db_2 -e POSTGRES_PASSWORD=postgres -ti -p 5432:5
 
 $ docker exec -i postgresql_db_2 psql -U postgres -d test_db -f /var/lib/postgresql/backup/backup_01.sql
 ```
-
-![SQL_02]()

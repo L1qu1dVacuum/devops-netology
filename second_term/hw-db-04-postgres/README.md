@@ -35,25 +35,25 @@ $ docker exec -it postgresql2_db_1 /bin/bash
 ```
 
 **Найдите и приведите** управляющие команды для:
-- вывода списка БД 
-
-    \l
+- вывода списка БД
+ 
+      \l
 
 - подключения к БД 
 
-    \c tablename -USER username
+      \c tablename -USER username
 
 - вывода списка таблиц 
 
-    \dt
+      \dt
 
 - вывода описания содержимого таблиц
  
-    \d tablename
+      \d tablename
 
 - выхода из psql
 
-    \q
+      \q
 
 
 ## Задача 2

@@ -29,24 +29,38 @@ volumes:
 ```bash
 $ docker exec -it postgresql2_db_1 /bin/bash
 
-\# psql -U postgres
+# psql -U postgres
 
 > \?
 ```
 
 **Найдите и приведите** управляющие команды для:
-- вывода списка БД - \l
-- подключения к БД - \c tablename -USER username
-- вывода списка таблиц - \dt
-- вывода описания содержимого таблиц - \d tablename
-- выхода из psql - \q
+- вывода списка БД
+ 
+      \l
+
+- подключения к БД 
+
+      \c tablename -USER username
+
+- вывода списка таблиц 
+
+      \dt
+
+- вывода описания содержимого таблиц
+ 
+      \d tablename
+
+- выхода из psql
+
+      \q
 
 
 ## Задача 2
 
 
 ```bash
-\# CREATE DATABASE test_database;
+# CREATE DATABASE test_database;
 
 $ wget https://raw.githubusercontent.com/netology-code/virt-homeworks/master/06-db-04-postgresql/test_data/test_dump.sql
 
@@ -54,7 +68,7 @@ $ docker exec -i postgresql2_db_1 psql -U postgres test_database < test_dump.sql
 
 $ docker exec -it postgresql2_db_1 /bin/bash
 
-\# psql -U postgres test_database
+# psql -U postgres test_database
 
 > \dt
 
@@ -63,7 +77,7 @@ $ docker exec -it postgresql2_db_1 /bin/bash
 > SELECT avg_width FROM pg_stats WHERE tablename='orders';
 ```
 
-![SQL_04]()
+![SQL_04](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-04-postgres/Images/2022-04-22.png?raw=true)
 
 
 ## Задача 3
@@ -89,7 +103,7 @@ $ docker exec -it postgresql2_db_1 /bin/bash
 > COMMIT;
 ```
 
-![SQL_04]()
+![SQL_04](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-db-04-postgres/Images/2022-04-22%20(2).png?raw=true)
 
 "Ручное" разбиение можно было изначально исключить при проектировании таблицы orders, проанализировав предполагаемую наполенность price и превентивно применив вышеизложенные правила заполнения.
 
@@ -98,7 +112,7 @@ $ docker exec -it postgresql2_db_1 /bin/bash
 
 
 ```bash
-docker exec -i postgresql2_db_1 pg_dump -U postgres test_database > test_database_dump.sql
+$ docker exec -i postgresql2_db_1 pg_dump -U postgres test_database > test_database_dump.sql
 ```
 
 Для создания уникальности, значения title можно проиндексировать. 

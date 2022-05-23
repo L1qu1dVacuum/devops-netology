@@ -53,9 +53,7 @@ CMD ["elasticsearch"]
 EXPOSE 9200 9300
 ```
 
-Ссылка на образ в репозитории dockerhub:
-
-[Ссылку на образ в репозитории dockerhub](https://hub.docker.com/repository/docker/l1qu1dvacuum/elasticsearch)
+[Ссылка на образ в репозитории dockerhub](https://hub.docker.com/repository/docker/l1qu1dvacuum/elasticsearch)
 
 Ответ `elasticsearch` на запрос пути `/` в json виде
 

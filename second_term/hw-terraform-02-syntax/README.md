@@ -8,7 +8,7 @@
 
 ## Задача 1
 
-```json
+```yaml
 terraform {
   required_providers {
     yandex = {
@@ -56,4 +56,4 @@ commands will detect it and remind you to do so if necessary.
 
 1. Packer
 
-2. 
+2. [Ссылка на репозиторий с исходной конфигурацией терраформа](https://github.com/L1qu1dVacuum/devops-netology/tree/main/second_term/hw-terraform-02-syntax/src/terraform)

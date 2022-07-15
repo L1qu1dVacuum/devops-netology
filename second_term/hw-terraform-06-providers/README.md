@@ -21,7 +21,8 @@
 
 [`все доступные data_source`](https://github.com/hashicorp/terraform-provider-aws/blob/5539af2626e1bacea60460b75f5b0ca606178700/internal/provider/provider.go#L426)
 
-1. Для создания очереди сообщений SQS используется ресурс `aws_sqs_queue` у которого есть параметр `name`.
+2. Для создания очереди сообщений SQS используется ресурс `aws_sqs_queue` у которого есть параметр `name`.
+
 
    * С каким другим параметром конфликтует `name`? Приложите строчку кода, в которой это указано.
 

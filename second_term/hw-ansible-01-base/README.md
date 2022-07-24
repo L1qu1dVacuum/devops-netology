@@ -161,7 +161,7 @@ ansible-doc --list
     hosts:
       ubuntu:
         ansible_connection: docker
-  local:
+  my:
     hosts:
       localhost:
         ansible_connection: local

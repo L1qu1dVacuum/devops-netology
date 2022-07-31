@@ -1,0 +1,7 @@
+---
+- name: Install Java
+  hosts: all
+  roles:
+    - java
+    - elastic-role
+    - kibana_role

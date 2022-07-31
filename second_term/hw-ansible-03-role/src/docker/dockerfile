@@ -1,0 +1,11 @@
+FROM alpine:3.16.1
+
+RUN CARGO_NET_GIT_FETCH_WITH_CLI=1 && \
+    apk --no-cache add \
+    tar \
+    sudo \
+    gzip \
+    python3 && \
+    rm -rf /var/cache/apk/*
+
+ENTRYPOINT ["/bin/sh"]

@@ -1,0 +1,7 @@
+---
+- name: test my own module
+  hosts: localhost
+  collections:
+    - my_own_namespace.my_own_collection
+  roles:
+    - myrole

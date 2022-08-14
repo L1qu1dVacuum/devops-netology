@@ -10,11 +10,11 @@
 
 В рамках основной части необходимо создать собственные workflow для двух типов задач: bug и остальные типы задач. Задачи типа bug должны проходить следующий жизненный цикл:
 
-    [Workflow для багов](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-ci-01-intro/src/bug_workflow.xml)
+   [Workflow для багов](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-ci-01-intro/src/bug_workflow.xml)
 
 Остальные задачи должны проходить по упрощённому workflow:
 
-    [Упрошенный workflow](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-ci-01-intro/src/task_workflow.xml)
+   [Упрошенный workflow](https://github.com/L1qu1dVacuum/devops-netology/blob/main/second_term/hw-ci-01-intro/src/task_workflow.xml)
 
 Создать задачу с типом bug, попытаться провести его по всему workflow до Done. Создать задачу с типом epic, к ней привязать несколько задач с типом task, провести их по всему workflow до Done. При проведении обеих задач по статусам использовать kanban. Вернуть задачи в статус Open. Перейти в scrum, запланировать новый спринт, состоящий из задач эпика и одного бага, стартовать спринт, провести задачи до состояния Closed. Закрыть спринт.
 
